@@ -74,6 +74,32 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+var googleClientId = builder.Configuration["Authentication_Google_ClientId"];
+var googleClientSecret = builder.Configuration["Authentication_Google_ClientSecret"];
+// If Google ID and secret are both found, then add the provider.
+if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
+{
+    builder.Services.AddAuthentication().AddGoogle(options =>
+    {
+        options.ClientId = googleClientId;
+        options.ClientSecret = googleClientSecret;
+    });
+}
+
+// Add Microsoft if keys are present
+var microsoftClientId = builder.Configuration["Authentication_Microsoft_ClientId"];
+var microsoftClientSecret = builder.Configuration["Authentication_Microsoft_ClientSecret"];
+
+// If Microsoft ID and secret are both found, then add the provider.
+if (!string.IsNullOrEmpty(microsoftClientId) && !string.IsNullOrEmpty(microsoftClientSecret))
+{
+    builder.Services.AddAuthentication().AddMicrosoftAccount(options =>
+    {
+        options.ClientId = microsoftClientId;
+        options.ClientSecret = microsoftClientSecret;
+    });
+}
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
