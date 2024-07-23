@@ -1,4 +1,3 @@
-using AspNetCore.Identity.CosmosDb.Extensions;
 using DeafultWebApp.Components;
 using DeafultWebApp.Components.Account;
 using DeafultWebApp.Data;
@@ -60,18 +59,18 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 // Here is where things fail. It is expecting Application User
-/*
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
-*/
 
-builder.Services.AddCosmosIdentity<ApplicationDbContext, ApplicationUser, ApplicationRole, string>(
-      options => options.SignIn.RequireConfirmedAccount = true // Always a good idea :)
-    )
-    .AddDefaultUI() // Use this if Identity Scaffolding is in use
-    .AddDefaultTokenProviders();
+
+//builder.Services.AddCosmosIdentity<ApplicationDbContext, ApplicationUser, ApplicationRole, string>(
+//      options => options.SignIn.RequireConfirmedAccount = true // Always a good idea :)
+//    )
+//    .AddDefaultUI() // Use this if Identity Scaffolding is in use
+//    .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
