@@ -60,17 +60,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Here is where things fail. It is expecting Application User
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<ApplicationRole>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
-
-
-//builder.Services.AddCosmosIdentity<ApplicationDbContext, ApplicationUser, ApplicationRole, string>(
-//      options => options.SignIn.RequireConfirmedAccount = true // Always a good idea :)
-//    )
-//    .AddDefaultUI() // Use this if Identity Scaffolding is in use
-//    .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
